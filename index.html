@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perdo Copyright Remover</title>
+    <style>
+        body { font-family: 'Segoe UI', Arial, sans-serif; text-align: center; background: #0f0f11; color: white; margin: 0; padding: 50px 20px; }
+        .container { background: #1a1a24; padding: 40px; border-radius: 15px; display: inline-block; box-shadow: 0 8px 32px rgba(0,112,243,0.2); border: 1px solid #2a2a36; max-width: 90%; }
+        h1 { color: #0070f3; margin-bottom: 5px; }
+        p { color: #888; margin-bottom: 30px; }
+        input[type="file"] { background: #222; padding: 10px; border-radius: 8px; border: 1px dashed #444; margin-bottom: 20px; cursor: pointer; }
+        button { background: #0070f3; color: white; border: none; padding: 12px 30px; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        button:hover { background: #0051bb; }
+        #status { margin-top: 20px; font-weight: 500; color: #00ffa3; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>🚀 Perdo Copyright Remover</h1>
+    <p>Modify visual frames and audio frequencies for fair-use automation.</p>
+    <input type="file" id="videoInput" accept="video/*"><br>
+    <button onclick="uploadVideo()">Upload & Process</button>
+    <p id="status"></p>
+</div>
+
+<script>
+    async function uploadVideo() {
+        const input = document.getElementById('videoInput');
+        const status = document.getElementById('status');
+        
+        if (!input.files[0]) {
+            alert('Please select a video file first!');
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('video', input.files[0]);
+        status.innerText = "⚡ Perdo is changing video signatures... Please wait.";
+
+        try {
+            // NOTE: REPLACE THIS WITH YOUR ACTUAL RENDER BACKEND URL AFTER STEP 6
+            const response = await fetch('https://YOUR-RENDER-APP-NAME.onrender.com/process-video', {
+                method: 'POST',
+                body: formData
+            });
+
+            if (!response.ok) throw new Error('Processing failed');
+
+            const blob = await response.blob();
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = "perdo_free_" + input.files[0].name;
+            document.body.appendChild(a);
+            a.click();
+            status.innerText = "✅ Success! Copyright-tweak completed and downloaded.";
+        } catch (error) {
+            status.innerText = "❌ Error processing your video.";
+            console.error(error);
+        }
+    }
+</script>
+</body>
+</html>
